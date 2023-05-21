@@ -1,3 +1,4 @@
+import React, { useState } from "react"
 import Button from "@/web/components/Button.jsx"
 import Form from "@/web/components/Form.jsx"
 import FormField from "@/web/components/FormField.jsx"
@@ -6,12 +7,17 @@ import axios from "axios"
 import * as yup from "yup"
 
 const OptionBox = (props) => {
-  const { name, option } = props
+  const { name, option, checked, onChange } = props
 
   return (
     <div>
       <label>
-        <input type="checkbox" name={name} />
+        <input
+          type="checkbox"
+          name={name}
+          checked={checked}
+          onChange={onChange}
+        />
         {option} ({name})
       </label>
     </div>
@@ -20,7 +26,6 @@ const OptionBox = (props) => {
 
 const initialValues = {
   target: "",
-  options: "-sV",
   optionScan: false,
   maxRetries: "",
   scanDelay: "",
@@ -38,6 +43,12 @@ const validationSchema = yup.object().shape({
 })
 
 const Scanpage = () => {
+  const [optionScan, setOptionScan] = useState(initialValues.optionScan)
+
+  const handleOptionScanChange = (event) => {
+    setOptionScan(event.target.checked)
+  }
+
   const handleSubmit = async (values) => {
     try {
       await axios.post("http://localhost:4000/nmap", values)
@@ -56,7 +67,12 @@ const Scanpage = () => {
       >
         <FormField name="target" />
 
-        <OptionBox name="optionScan" option="Option Scan (sS)" />
+        <OptionBox
+          name="optionScan"
+          option="Option Scan (sS)"
+          checked={optionScan}
+          onChange={handleOptionScanChange}
+        />
 
         <OptionBox name="maxRetries" option="Max Retries" />
         <OptionBox name="scanDelay" option="Scan Delay" />

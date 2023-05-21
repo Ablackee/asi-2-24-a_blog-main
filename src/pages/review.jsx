@@ -32,6 +32,9 @@ const Reviewpage = () => {
               <div key={item._id}>
                 <p>Target: {item.target}</p>
                 <p>Options: {JSON.stringify(item.options)}</p>
+                {item.maxRetries && <p>Max Retries: {item.maxRetries}</p>}
+                {item.scanDelay && <p>Scan Delay: {item.scanDelay}</p>}
+                {item.maxRate && <p>Max Rate: {item.maxRate}</p>}
                 <pre>{item.result}</pre>
                 <p>Created at: {item.createdAt}</p>
                 <p>Updated at: {item.updatedAt}</p>
